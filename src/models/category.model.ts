@@ -11,7 +11,7 @@ export interface CategoryModel extends Model<InferAttributes<CategoryModel>, Inf
 }
 
 export function getCategory(sequelize: Sequelize) {
-  return sequelize.define<CategoryModel>('Category', {
+  return sequelize.define<CategoryModel>('category', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     cat_id: DataTypes.INTEGER,
     cat_name_bn: DataTypes.TEXT,
@@ -19,5 +19,5 @@ export function getCategory(sequelize: Sequelize) {
     no_of_subcat: DataTypes.INTEGER,
     no_of_dua: DataTypes.INTEGER,
     cat_icon: DataTypes.TEXT,
-  }, { timestamps: false, modelName: "category", freezeTableName: true });
+  }, { timestamps: false, freezeTableName: true });
 }

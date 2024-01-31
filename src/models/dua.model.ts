@@ -24,7 +24,7 @@ export interface DuaModel extends Model<InferAttributes<DuaModel>, InferCreation
 }
 
 export function getDua(sequelize: Sequelize) {
-  return sequelize.define<DuaModel>('Dua', {
+  return sequelize.define<DuaModel>('dua', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -49,6 +49,6 @@ export function getDua(sequelize: Sequelize) {
     refference_bn: DataTypes.TEXT,
     refference_en: DataTypes.TEXT,
     audio: DataTypes.TEXT,
-  }, { timestamps: false, modelName: "dua", freezeTableName: true },
+  }, { timestamps: false, freezeTableName: true },
   );
 }

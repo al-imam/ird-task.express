@@ -5,12 +5,12 @@ import express from "express";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const duas = await db.SubCategory.findAll({ include: { all: true } });
-  console.log(duas.map((dua) => dua.toJSON()));
-  res.json({
-    message: "Hello World!",
-    duas: duas.map((dua) => dua.toJSON()),
-  });
+  try {
+    const duas = await db.Category.findAll({ include: { all: true, nested: true } });
+    res.json(duas.map((dua) => dua.toJSON()));
+  } catch {
+    res.status(500).send("Something went wrong");
+  }
 });
 
 export { router };
