@@ -10,12 +10,12 @@ export interface SubCategoryModel extends Model<InferAttributes<SubCategoryModel
 }
 
 export function getSubCategory(sequelize: Sequelize) {
-  return sequelize.define<SubCategoryModel>('SubCategory', {
+  return sequelize.define<SubCategoryModel>('sub_category', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     cat_id: DataTypes.INTEGER,
     subcat_id: DataTypes.INTEGER,
     subcat_name_bn: DataTypes.TEXT,
     subcat_name_en: DataTypes.TEXT,
     no_of_dua: DataTypes.INTEGER,
-  }, { timestamps: false });
+  }, { timestamps: false, freezeTableName: true });
 }

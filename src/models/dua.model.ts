@@ -49,6 +49,6 @@ export function getDua(sequelize: Sequelize) {
     refference_bn: DataTypes.TEXT,
     refference_en: DataTypes.TEXT,
     audio: DataTypes.TEXT,
-  }, { timestamps: false },
+  }, { timestamps: false, modelName: "dua", freezeTableName: true },
   );
 }

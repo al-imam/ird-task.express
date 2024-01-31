@@ -1,10 +1,11 @@
 import { getCategory, getDua, getSubCategory } from '$models';
-import { join } from 'path';
+import path from 'path';
 import { Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: join(process.cwd(), 'dua_main.sqlite'),
+  storage: path.join(__dirname, "../../dua_main.sqlite"),
+  
 });
 
 sequelize.authenticate();

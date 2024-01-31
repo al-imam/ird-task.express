@@ -19,5 +19,5 @@ export function getCategory(sequelize: Sequelize) {
     no_of_subcat: DataTypes.INTEGER,
     no_of_dua: DataTypes.INTEGER,
     cat_icon: DataTypes.TEXT,
-  }, { timestamps: false });
+  }, { timestamps: false, modelName: "category", freezeTableName: true });
 }
