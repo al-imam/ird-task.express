@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "sourceMap": true,
+    "target": "esnext",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "baseUrl": "src",
+    "paths": {
+      "$config": ["config"],
+      "$controllers": ["controllers"],
+      "$interfaces": ["interfaces"],
+      "$middlewares": ["middlewares"],
+      "$models": ["models"],
+      "$routes": ["routes"],
+      "$services": ["services"],
+      "$utils": ["utils"],
+      "$db": ["database"],
+      "$/*": ["*"]
+    }
+  },
+  "include": ["./*.js", "src/**/*.ts"]
+}
