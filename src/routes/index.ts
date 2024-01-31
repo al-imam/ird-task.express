@@ -1,7 +1,6 @@
 import { db } from "$db";
 import express from "express";
 
-
 const router = express.Router();
 
 router.get("/navigation", async (req, res) => {
@@ -52,6 +51,16 @@ router.get("/dua/category/:id", async (req, res) => {
     });
 
     res.json(duas.map((dua) => dua.toJSON()));
+  } catch {
+    res.status(500).send("Something went wrong");
+  }
+});
+
+router.get("/dua/first-category", async (_, res) => {
+  try {
+    const category = await db.Category.findOne();
+
+    res.json(category?.toJSON() ?? {});
   } catch {
     res.status(500).send("Something went wrong");
   }
