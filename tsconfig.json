@@ -19,9 +19,9 @@
       "$routes": ["routes"],
       "$services": ["services"],
       "$utils": ["utils"],
-      "$db": ["database"],
+      "$db": ["db"],
       "$/*": ["*"]
     }
   },
-  "include": ["./*.js", "src/**/*.ts"]
+  "include": ["./*.js", "src/**/*.ts", "src/models/sub-category.tsx"]
 }
