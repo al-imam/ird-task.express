@@ -41,4 +41,20 @@ router.get("/navigation", async (req, res) => {
   }
 });
 
+router.get("/dua/category/:id", async (req, res) => {
+  const id = parseInt(req.params.id);
+  if (isNaN(id)) return res.status(400).json({ error: "Bad Request" });
+
+  try {
+    const duas = await db.Category.findAll({
+      where: { "cat_id": id }, 
+      include:{ all: true, nested: true }, 
+    });
+
+    res.json(duas.map((dua) => dua.toJSON()));
+  } catch {
+    res.status(500).send("Something went wrong");
+  }
+});
+
 export { router };
