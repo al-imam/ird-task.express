@@ -79,3 +79,4 @@ typings/
 
 dist
 *.sqlite
+!dua_main.sqlite
