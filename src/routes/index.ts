@@ -1,5 +1,6 @@
 import { db } from "$db";
 import express from "express";
+import { Op } from "sequelize";
 
 const router = express.Router();
 
@@ -9,15 +10,23 @@ router.get("/navigation", async (req, res) => {
     
     It should work but some how not working here,
     maybe because sequelize never created relation between table because they already exist!
-    
+
+    So i have to overwrite sequelize logic `ON`
+      on: {'$`category`.cat_id$': { [Op.col]: 'sub_categories.cat_id' } }
     */
 
     const duas = await db.Category.findAll({ 
       include:[{ 
         model: db.SubCategory, 
         attributes: { exclude: ["subcat_name_bn"] }, 
+        on: {
+          '$`category`.cat_id$': { [Op.col]: 'sub_categories.cat_id' },
+        },
         include: [{ 
           model: db.Dua, 
+          on: {
+            '$sub_categories.subcat_id$': { [Op.col]: 'sub_categories->duas.subcat_id' },
+          },
           attributes: { 
             exclude:[
               "dua_name_bn",
@@ -42,47 +51,32 @@ router.get("/navigation", async (req, res) => {
     }); 
 
 
-    /*     
-    
-    fallback, promise for can do better.
-
-    const categoriesWithSubCategory = [] as any[];
-
-    const categories = await db.Category.findAll();
-
-    for (const category of categories) {
-      const subs = await db.SubCategory.findAll({ where: { cat_id: category.cat_id }, include: { all: true } });
-      const subsWithDuas = [] as any[];
-
-      for (const sub of subs) {
-        const duas = await db.Dua.findAll({ where: { subcat_id: sub.subcat_id } });
-        subsWithDuas.push({ ...sub.toJSON(), duas: duas.map((d) => d.toJSON()) });
-      }
-      
-      categoriesWithSubCategory.push({ ...category.toJSON(), sub_categories: subsWithDuas  });
-    } 
-    */
-  
 
     res.json(duas.map((d) => d.toJSON()));
   } catch {
-    res.status(500).send("Something went wrong");
+    res.status(500).json({ message: "Internal Server Error", code: "server" });
   }
 });
 
 router.get("/dua/category/:id", async (req, res) => {
   const id = parseInt(req.params.id);
-  if (isNaN(id)) return res.status(400).json({ error: "Bad Request" });
+  if (isNaN(id)) return res.status(400).json({ message: "Poor request", code: "client" });
 
   try {
     const duas = await db.Category.findAll({
       where: { "cat_id": id }, 
-      include:{ all: true, nested: true }, 
+      include:[{ 
+        model: db.SubCategory,  
+        on: { '$`category`.cat_id$': { [Op.col]: 'sub_categories.cat_id' } },
+        include: [{ model: db.Dua, 
+          on: { '$sub_categories.subcat_id$': { [Op.col]: 'sub_categories->duas.subcat_id' } },  
+        }], 
+      }],
     });
 
     res.json(duas.map((dua) => dua.toJSON()));
   } catch {
-    res.status(500).send("Something went wrong");
+    res.status(500).json({ message: "Internal Server Error", code: "server" });
   }
 });
 
@@ -92,7 +86,7 @@ router.get("/dua/first-category", async (_, res) => {
 
     res.json(category?.toJSON() ?? {});
   } catch {
-    res.status(500).send("Something went wrong");
+    res.status(500).json({ message: "Internal Server Error", code: "server" });
   }
 });
 
