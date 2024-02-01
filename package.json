@@ -1,10 +1,9 @@
 {
-  "name": "express-api-starter-ts",
+  "name": "ird-task-node",
   "version": "1.2.0",
-  "description": " A basic starter for an express.js API with Typescript",
   "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "dev": "nodemon",
     "build": "tsc",
     "lint": "eslint --fix src test",
