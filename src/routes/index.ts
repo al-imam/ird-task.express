@@ -5,6 +5,11 @@ const router = express.Router();
 
 router.get("/navigation", async (req, res) => {
   try {
+    /* 
+    
+    It should work but some how not working here,
+    maybe because sequelize never created relation between table because they already exist!
+
     const duas = await db.Category.findAll({ 
       include:[{ 
         model: db.SubCategory, 
@@ -32,9 +37,27 @@ router.get("/navigation", async (req, res) => {
           }, 
         }], 
       }],
-    });
-    
-    res.json(duas.map((dua) => dua.toJSON()));
+    }); 
+    */
+
+    const categoriesWithSubCategory = [] as any[];
+
+    const categories = await db.Category.findAll();
+
+    for (const category of categories) {
+      const subs = await db.SubCategory.findAll({ where: { cat_id: category.cat_id }, include: { all: true } });
+      const subsWithDuas = [] as any[];
+
+      for (const sub of subs) {
+        const duas = await db.Dua.findAll({ where: { subcat_id: sub.subcat_id } });
+        subsWithDuas.push({ ...sub.toJSON(), duas: duas.map((d) => d.toJSON()) });
+      }
+
+      categoriesWithSubCategory.push({ ...category.toJSON(), sub_categories: subsWithDuas  });
+    }
+  
+
+    res.json(categoriesWithSubCategory);
   } catch {
     res.status(500).send("Something went wrong");
   }

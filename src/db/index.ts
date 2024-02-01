@@ -17,6 +17,9 @@ const Dua = getDua(sequelize);
 Category.hasMany(SubCategory, { foreignKey: 'cat_id' });
 SubCategory.belongsTo(Category, { foreignKey: 'cat_id' });
 
+Category.hasMany(Dua, { foreignKey: 'cat_id' });
+Dua.belongsTo(Category, { foreignKey: 'cat_id' });
+
 SubCategory.hasMany(Dua, { foreignKey: 'subcat_id' });
 Dua.belongsTo(SubCategory, { foreignKey: 'subcat_id' });
 
